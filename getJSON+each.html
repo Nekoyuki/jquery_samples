@@ -1,0 +1,29 @@
+i<!DOCTYPE html>
+<html>
+<head>
+  <style>img{ height: 100px; float: left; }</style>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+</head>
+<body>
+  <div id="images">
+</div>
+<script>
+$(document).ready(function(){
+  $.getJSON("http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?",
+    {
+      tags: "f86",
+      tagmode: "any",
+      format: "json"
+    },
+    function(data) {
+      //alert('aaa');
+      $.each(data.items, function(i,item){
+        $("<img/>").attr("src", item.media.m).appendTo("#images");
+        if ( i == 30 ) return false;
+      });
+    });
+  });
+</script>
+</body>
+</html>
+
