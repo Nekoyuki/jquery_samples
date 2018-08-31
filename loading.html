@@ -1,0 +1,52 @@
+<head>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+    <link rel='stylesheet' href='https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css'>
+
+    <script>
+    $(() => {
+        $("#loading").html("<img src='./topgun_valleyball.gif'>");
+        $.ajax({
+            url: "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?",
+            type: 'GET',
+            data: {
+                tags: 'f86',
+                tagmode: 'any',
+                format: 'json',
+            },
+            dataType: 'json'
+        }).done((data, status, xhr) =>{
+            console.log("done");
+            console.log("status=", status);
+            console.log("xhr.status=", xhr.status);
+            console.log(data);
+            console.log(xhr);
+
+            $("#loading").empty();
+            $.each(data.items, (i, item) =>{
+                $("<img/>").attr("src", item.media.m).appendTo("#loaded");
+                if (i == 30) return false;
+            });
+            //$("#loaded").html(data);
+
+        }).fail((xhr, status, error) =>{
+            console.log("fail");
+            console.log("status=", status);
+            console.log("xhr.status=", xhr.status);
+            console.log(xhr);
+            console.log(error);
+            $("#loading").empty();
+            $("#loaded").html("$.ajax.fail, xhr.status=", xhr.status);
+
+        }).always((data, status, xhr) =>{
+            console.log("always");
+            console.log("status=", status);
+            console.log("xhr.status=", xhr.status);
+        });
+    });
+    </script>
+</head>
+<body>
+    <div id="loading"></div>
+    <div id="loaded"></div>
+</body>
